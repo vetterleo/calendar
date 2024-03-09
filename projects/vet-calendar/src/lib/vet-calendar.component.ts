@@ -1,6 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import moment from "moment"
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 
 export interface CalendarDate {
@@ -143,7 +143,7 @@ export class VetCalendarComponent implements OnInit {
     
     // Get all the dates we want to display 
     const range = this.arrayRange(startCalendar, startCalendar + lastDayOfGrid.diff(firstDayOfGrid, 'days'), 1)
-    return range.map((date: any) => {
+    return range.map((date: number) => {
       const newDate = moment(firstDayOfGrid).date(date);
       return {
         today: this.isToday(newDate),
@@ -175,7 +175,7 @@ export class VetCalendarComponent implements OnInit {
   /**
    * Generate a array with values between start and stop and incremented by step
    */
-  private arrayRange(start: any, stop: any, step: any) {
+  private arrayRange(start: number, stop: number, step: number) {
 
     return Array.from(
       { length: (stop - start) / step + 1 },

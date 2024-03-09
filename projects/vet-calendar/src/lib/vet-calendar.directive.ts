@@ -1,4 +1,4 @@
-import { Directive, ElementRef, Injector, OnInit, Renderer2, ViewContainerRef, ViewChild, ChangeDetectorRef, AfterViewInit, ViewChildren, ContentChild, ContentChildren, Input, ComponentRef, HostListener } from '@angular/core';
+import { Directive, ElementRef, OnInit, Renderer2, ViewContainerRef, AfterViewInit, Input, ComponentRef, HostListener } from '@angular/core';
 import { VetCalendarComponent } from './vet-calendar.component';
 import moment from "moment"
 
@@ -69,11 +69,11 @@ export class VetCalendarDirective implements OnInit, AfterViewInit {
    * @param event click event 
    */
   @HostListener('document:click', ['$event'])
-  clickOut(event: any) {
+  clickOut(event: MouseEvent) {
 
     if (this.inputValidated) {
 
-      if (!this.calendarWrapper.contains(event.target)) {
+      if (!this.calendarWrapper.contains(event.target as Node)) {
         this.calendarComponentRef.instance.show = false;
       }
     }
@@ -88,8 +88,8 @@ export class VetCalendarDirective implements OnInit, AfterViewInit {
     if (this.startRange && this.endRange) {
 
       const regex = '^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$'; 
-      var isValidStartRange = this.startRange.match(regex);
-      var isValidEndRange = this.endRange.match(regex);
+      const isValidStartRange = this.startRange.match(regex);
+      const isValidEndRange = this.endRange.match(regex);
 
       if (!isValidStartRange || !isValidEndRange) {
 

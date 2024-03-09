@@ -2,26 +2,19 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.2.2.
 
-## Development server
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Run `npm run build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Running unit tests
+## Usage
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Use the directive `vet-calendar` on your input as such `<input vetCalendarDir>` to use the date picker.
+The directive accept three input `noFuture`, `startRange`, `endRange` and `format`.
 
-## Running end-to-end tests
+The input `noFuture` tell the date picker that the dates in the future cannot be selected.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+The input `startRange` and `endRange` tell the date picker that only the dates in the range can be selected.
+The format of the `startRange` and `endRange` must be of the form `YYYY-MM-DD`. An error is thrown if it is not the case.
 
-## Further help
+The input `format` tell the date picker how to format the date in the input
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

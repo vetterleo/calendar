@@ -17,6 +17,8 @@ export class VetCalendarDirective implements OnInit, AfterViewInit {
   calendarInputWrapper: HTMLElement;
   calendarComponentRef: ComponentRef<VetCalendarComponent>;
 
+  inputValidated: boolean;
+
   constructor(private renderer: Renderer2, 
               private elementRef: ElementRef,
               private viewContainerRef: ViewContainerRef) { }
@@ -26,17 +28,22 @@ export class VetCalendarDirective implements OnInit, AfterViewInit {
    */
   ngOnInit(): void {
 
+    this.validateInputs();
     
-    const inputElement = this.editInputElement();
-    const parent = inputElement.parentNode;
+    if (this.inputValidated) {
 
-    this.createCalendarWrapper();
-    this.insertWrapper(this.calendarWrapper, parent, inputElement);
+      const inputElement = this.editInputElement();
+      const parent = inputElement.parentNode;
+
+      this.createCalendarWrapper();
+      this.insertWrapper(this.calendarWrapper, parent, inputElement);
+      
+      this.createInputWrapper();
+      this.insertWrapper(this.calendarInputWrapper, this.calendarWrapper, inputElement);
+
+      this.initCalendarComponent(this.calendarWrapper, this.calendarInputWrapper);
+    }
     
-    this.createInputWrapper();
-    this.insertWrapper(this.calendarInputWrapper, this.calendarWrapper, inputElement);
-
-    this.initCalendarComponent(this.calendarWrapper, this.calendarInputWrapper);
   }
 
   /**
@@ -44,15 +51,17 @@ export class VetCalendarDirective implements OnInit, AfterViewInit {
    */
   ngAfterViewInit(): void {
     
+    if (this.inputValidated) {
 
-    this.calendarComponentRef.instance.noFuture = this.noFuture;
-    if (this.startRange && this.endRange) {
+      this.calendarComponentRef.instance.noFuture = this.noFuture;
+      if (this.startRange && this.endRange) {
 
-      this.calendarComponentRef.instance.startRange = moment(this.startRange);
-      this.calendarComponentRef.instance.endRange = moment(this.endRange);
+        this.calendarComponentRef.instance.startRange = moment(this.startRange);
+        this.calendarComponentRef.instance.endRange = moment(this.endRange);
+      }
+
+      this.editIcon();
     }
-
-    this.editIcon();
   }
 
   /**
@@ -61,9 +70,35 @@ export class VetCalendarDirective implements OnInit, AfterViewInit {
    */
   @HostListener('document:click', ['$event'])
   clickOut(event: any) {
-    if (!this.calendarWrapper.contains(event.target)) {
-      this.calendarComponentRef.instance.show = false;
+
+    if (this.inputValidated) {
+
+      if (!this.calendarWrapper.contains(event.target)) {
+        this.calendarComponentRef.instance.show = false;
+      }
     }
+    
+  }
+
+  /**
+   * Validate the inputs and throw an error if not ok.
+   */
+  private validateInputs() {
+
+    if (this.startRange && this.endRange) {
+
+      const regex = '^[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]$'; 
+      var isValidStartRange = this.startRange.match(regex);
+      var isValidEndRange = this.endRange.match(regex);
+
+      if (!isValidStartRange || !isValidEndRange) {
+
+        this.inputValidated = false;
+        throw('startRange or endRange is not in a valid format. Only format "YYYY-MM-DD" is accepted');
+      }
+    }
+
+    this.inputValidated = true;
   }
 
   /**

@@ -1,0 +1,15 @@
+{
+  "name": "@leovetter/vet-calendar",
+  "version": "0.0.7",
+  "peerDependencies": {
+    "@angular/core": "^17.2.0",
+    "moment": "^2.30.1",
+    "@fortawesome/angular-fontawesome": "^0.14.0",
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "sideEffects": false
+}
